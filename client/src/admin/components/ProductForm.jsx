@@ -1,62 +1,60 @@
-import { useEffect, useState } from "react";
-import {
-  createProduct,
-  updateProduct
-} from "../../services/productService";
+import { useState } from "react";
+import api from "../../services/api";
 
-const ProductForm = ({ editing, onSuccess }) => {
+const ProductForm = ({ onSuccess }) => {
   const [form, setForm] = useState({
     name: "",
     price: "",
     stock: "",
-    category: ""
+    category: "",
   });
-
-  useEffect(() => {
-    if (editing) setForm(editing);
-  }, [editing]);
+  const [images, setImages] = useState([]);
 
   const submit = async (e) => {
     e.preventDefault();
-    editing
-      ? await updateProduct(editing._id, form)
-      : await createProduct(form);
 
-    setForm({ name: "", price: "", stock: "", category: "" });
+    const formData = new FormData();
+    Object.entries(form).forEach(([key, value]) =>
+      formData.append(key, value)
+    );
+
+    for (let img of images) {
+      formData.append("images", img);
+    }
+
+    await api.post("/products", formData);
     onSuccess();
   };
 
   return (
     <form
       onSubmit={submit}
-      className="bg-white p-4 shadow rounded grid grid-cols-4 gap-4"
+      className="bg-white p-4 shadow rounded space-y-3"
     >
       <input
-        placeholder="Name"
-        value={form.name}
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-        className="border p-2"
+        placeholder="Product Name"
+        className="border p-2 w-full"
+        onChange={(e) =>
+          setForm({ ...form, name: e.target.value })
+        }
       />
+
       <input
         placeholder="Price"
-        value={form.price}
-        onChange={(e) => setForm({ ...form, price: e.target.value })}
-        className="border p-2"
+        className="border p-2 w-full"
+        onChange={(e) =>
+          setForm({ ...form, price: e.target.value })
+        }
       />
+
       <input
-        placeholder="Stock"
-        value={form.stock}
-        onChange={(e) => setForm({ ...form, stock: e.target.value })}
-        className="border p-2"
+        type="file"
+        multiple
+        onChange={(e) => setImages(e.target.files)}
       />
-      <input
-        placeholder="Category"
-        value={form.category}
-        onChange={(e) => setForm({ ...form, category: e.target.value })}
-        className="border p-2"
-      />
-      <button className="col-span-4 bg-black text-white py-2">
-        {editing ? "Update Product" : "Add Product"}
+
+      <button className="bg-black text-white px-4 py-2">
+        Add Product
       </button>
     </form>
   );
