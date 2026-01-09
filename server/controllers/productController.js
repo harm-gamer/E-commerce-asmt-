@@ -2,7 +2,13 @@ import Product from "../models/Product.js";
 
 // CREATE
 export const createProduct = async (req, res) => {
-  const product = await Product.create(req.body);
+    const images = req.files.map((file) => file.path);
+
+  const product = await Product.create({
+    ...req.body,
+    images,
+  });
+  
   res.status(201).json(product);
 };
 
