@@ -14,19 +14,27 @@ const Navbar = () => {
         <Link to="/">Home</Link>
         <Link to="/cart">Cart</Link>
 
-        {!user && <Link to="/login">Login</Link>}
+        {!user && <Link to="/register">Register</Link>}
 
         {user && user.role === "customer" && (
           <button onClick={logout} className="text-red-600">
             Logout
           </button>
         )}
-
-        {user?.role === "admin" && (
+ {user ? (
+  user.role === "admin" ? (
+    <Link to="/admin/dashboard">Admin Panel</Link>
+  ) : (
+    <Link to="/profile">My Account</Link>
+  )
+) : (
+  <Link to="/login">Login</Link>
+)}
+        {/* {user?.role === "admin" && (
           <Link to="/admin/dashboard" className="text-blue-600">
             Admin
           </Link>
-        )}
+        )} */}
       </div>
     </nav>
   );

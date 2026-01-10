@@ -7,6 +7,8 @@ export const getDashboardStats = async (req, res) => {
   const products = await Product.countDocuments();
   const orders = await Order.countDocuments();
 
+ 
+
   const revenue = await Order.aggregate([
     { $group: { _id: null, total: { $sum: "$totalPrice" } } },
   ]);

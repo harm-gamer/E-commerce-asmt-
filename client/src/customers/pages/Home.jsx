@@ -3,12 +3,18 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import ProductCard from "../components/ProductCard";
 import api from "../../services/api";
+import axios from "axios";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
 
+ 
+
   useEffect(() => {
-    api.get("/products").then((res) => setProducts(res.data));
+    axios
+      .get("http://localhost:5000/api/products")
+      .then((res) => setProducts(res.data))
+      .catch((err) => console.error(err));
   }, []);
 
   return (

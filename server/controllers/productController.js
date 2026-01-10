@@ -8,7 +8,7 @@ export const createProduct = async (req, res) => {
     ...req.body,
     images,
   });
-  
+
   res.status(201).json(product);
 };
 
@@ -16,6 +16,11 @@ export const createProduct = async (req, res) => {
 export const getProducts = async (req, res) => {
   const products = await Product.find();
   res.json(products);
+};
+
+export const getProductById = async (req, res) => {
+  const product = await Product.findById(req.params.id);
+  res.json(product);
 };
 
 // UPDATE

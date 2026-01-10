@@ -1,6 +1,11 @@
 const Hero = () => {
   return (
-    <section className="bg-gray-100 py-16 text-center">
+    <section className="bg-gray-100 py-16 text-center" style={{
+        height: "90vh",
+        backgroundImage: "url('/goldbackground.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
       <h1 className="text-4xl font-bold mb-4">
         Personalized Silver Jewellery
       </h1>
